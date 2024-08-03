@@ -1993,8 +1993,28 @@ downloadFile() {
     URI="SagerNet/sing-box"
     GITHUB_URI="https://github.com/${URI}"
     TAG_URI="/${URI}/releases/tag/"
-    VERSION=$(curl -sL ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+
+    # 尝试获取网页内容，最多重试5次
+    for i in {1..5}; do
+        PAGE_CONTENT=$(curl -sL ${GITHUB_URI}/releases)
+        if [ -n "${PAGE_CONTENT}" ]; then
+            break
+        fi
+        echo "尝试获取网页内容失败，重试第 $i 次..."
+        sleep 2
+    done
+
+    # 确保成功获取到网页内容
+    if [ -z "${PAGE_CONTENT}" ]; then
+        echo "无法获取网页内容，请稍后再试。"
+        exit 1
+    fi
+
+    # 提取最新版本号
+    VERSION=$(echo "${PAGE_CONTENT}" | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;" | sed 's/\"//g')
     echo ${VERSION}
+
+    # 下载并编译
     FILENAME=$(basename ${GITHUB_URI})
     wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
     tar zxf ${FILENAME}.tar.gz
@@ -2009,8 +2029,28 @@ downloadFile() {
     URI="cloudflare/cloudflared"
     GITHUB_URI="https://github.com/${URI}"
     TAG_URI="/${URI}/releases/tag/"
-    VERSION=$(curl -sL ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+
+    # 尝试获取网页内容，最多重试5次
+    for i in {1..5}; do
+        PAGE_CONTENT=$(curl -sL ${GITHUB_URI}/releases)
+        if [ -n "${PAGE_CONTENT}" ]; then
+            break
+        fi
+        echo "尝试获取网页内容失败，重试第 $i 次..."
+        sleep 2
+    done
+
+    # 确保成功获取到网页内容
+    if [ -z "${PAGE_CONTENT}" ]; then
+        echo "无法获取网页内容，请稍后再试。"
+        exit 1
+    fi
+
+    # 提取最新版本号
+    VERSION=$(echo "${PAGE_CONTENT}" | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;" | sed 's/\"//g')
     echo ${VERSION}
+
+    # 下载并编译
     FILENAME=$(basename ${GITHUB_URI})
     wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
     tar zxf ${FILENAME}.tar.gz
