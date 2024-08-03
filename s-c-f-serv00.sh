@@ -1989,25 +1989,37 @@ UiLgNoD-lIaMtOh
 
 # 下载 sing-box-freebsd cloudflared-freebsd 配置并启用
 downloadFile() {
-    # 下载 freebsd 社区 yuri@FreeBSD.org 的 sing-box 包 sing-box https://freebsd.pkgs.org/14/freebsd-amd64/sing-box-1.9.3.pkg.html
-    URI="https://pkg.freebsd.org/FreeBSD:14:amd64/latest/All/sing-box-1.9.3.pkg"
-    FILENAME=$(basename $URI)
-    wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${URI}" -O $FILENAME
-    FILEPATH=$(tar tvf $FILENAME | grep bin/sing-box | awk '{print $9}')
-    tar zxvf $FILENAME
-    mv -fv .$FILEPATH ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd
-    chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd
-    rm -rfv $FILENAME usr
+    # 本地 go 构建 sing-box
+    URI="SagerNet/sing-box"
+    GITHUB_URI="https://github.com/${URI}"
+    TAG_URI="/${URI}/releases/tag/"
+    VERSION=$(curl -s ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+    echo ${VERSION}
+    FILENAME=$(basename ${GITHUB_URI})
+    wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
+    tar zxf ${FILENAME}.tar.gz
+    cd ${FILENAME}-${VERSION#v}
+    go build ./cmd/${FILENAME}
+    mv -fv ./${FILENAME} ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
+    chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
+    cd -
+    rm -rfv ${FILENAME}.tar.gz ${FILENAME}-${VERSION#v}
 
-    # 非官方构建 cloudflared-freebsd https://cloudflared.bowring.uk/binaries/cloudflared-freebsd-latest.7z
-    URI="https://cloudflared.bowring.uk/binaries/cloudflared-freebsd-latest.7z"
-    FILENAME=$(basename $URI)
-    wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${URI}" -O $FILENAME
-    FILEPATH=$(tar tvf $FILENAME | grep temp/cloudflared | awk '{print $9}')
-    tar zxvf $FILENAME
-    mv -fv ./$FILEPATH ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd
-    chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd
-    rm -rfv $FILENAME temp
+    # 本地 go 构建 cloudflared-freebsd
+    URI="cloudflare/cloudflared"
+    GITHUB_URI="https://github.com/${URI}"
+    TAG_URI="/${URI}/releases/tag/"
+    VERSION=$(curl -s ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+    echo ${VERSION}
+    FILENAME=$(basename ${GITHUB_URI})
+    wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
+    tar zxf ${FILENAME}.tar.gz
+    cd ${FILENAME}-${VERSION}
+    go build ./cmd/${FILENAME}
+    mv -fv ./${FILENAME} ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
+    chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
+    cd -
+    rm -rfv ${FILENAME}.tar.gz ${FILENAME}-${VERSION}
 }
 
 killMe() {
