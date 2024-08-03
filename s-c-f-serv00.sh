@@ -2023,7 +2023,7 @@ downloadFile() {
     mv -fv ./${FILENAME} ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
     chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
     cd -
-    rm -rfv ${FILENAME}.tar.gz ${FILENAME}-${VERSION#v}
+    rm -rf ${FILENAME}.tar.gz ${FILENAME}-${VERSION#v}
 
     # 本地 go 构建 cloudflared-freebsd
     URI="cloudflare/cloudflared"
@@ -2059,7 +2059,7 @@ downloadFile() {
     mv -fv ./${FILENAME} ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
     chmod -v u+x ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/${FILENAME}-freebsd
     cd -
-    rm -rfv ${FILENAME}.tar.gz ${FILENAME}-${VERSION}
+    rm -rf ${FILENAME}.tar.gz ${FILENAME}-${VERSION}
 }
 
 killMe() {
