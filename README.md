@@ -145,6 +145,8 @@ sing-box + cloudflare + freebsd 支持在 serv00 上搭建 vless(cloudflare) + v
 serv00 Revolutionary Free Hosting: [https://www.serv00.com/offer](https://www.serv00.com/offer)  
 cloudns domain for free: [https://www.cloudns.net/](https://www.cloudns.net/)  
 cloudflare dashboard for free: [https://dash.cloudflare.com/](https://dash.cloudflare.com/)  
+cloudflared: [https://github.com/cloudflare/cloudflared](https://github.com/cloudflare/cloudflared)
+sing-box: [https://github.com/SagerNet/sing-box](https://github.com/SagerNet/sing-box)
 ~yuri@FreeBSD.org sing-box for freebsd:[https://www.freshports.org/net/sing-box](https://www.freshports.org/net/sing-box)~  
 ~Unofficial FreeBSD cloudflared builds : [https://cloudflared.bowring.uk/](https://cloudflared.bowring.uk/)~  
 Saika's Blog serv00自动续期：[https://saika.us.kg/2024/01/27/serv00_logs/#%E8%87%AA%E5%8A%A8%E7%BB%AD%E6%9C%9F](https://saika.us.kg/2024/01/27/serv00_logs/#%E8%87%AA%E5%8A%A8%E7%BB%AD%E6%9C%9F)  
