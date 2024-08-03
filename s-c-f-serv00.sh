@@ -1993,7 +1993,7 @@ downloadFile() {
     URI="SagerNet/sing-box"
     GITHUB_URI="https://github.com/${URI}"
     TAG_URI="/${URI}/releases/tag/"
-    VERSION=$(curl -s ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+    VERSION=$(curl -sL ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
     echo ${VERSION}
     FILENAME=$(basename ${GITHUB_URI})
     wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
@@ -2009,7 +2009,7 @@ downloadFile() {
     URI="cloudflare/cloudflared"
     GITHUB_URI="https://github.com/${URI}"
     TAG_URI="/${URI}/releases/tag/"
-    VERSION=$(curl -s ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
+    VERSION=$(curl -sL ${GITHUB_URI}/releases | grep -o "href=\"${TAG_URI}[^\"]*" | head -n 1 | sed "s;href=\"${TAG_URI};;")
     echo ${VERSION}
     FILENAME=$(basename ${GITHUB_URI})
     wget -t 3 -T 10 --verbose --show-progress=on --progress=bar --no-check-certificate --hsts-file=/tmp/wget-hsts -c "${GITHUB_URI}/archive/refs/tags/${VERSION}.tar.gz" -O ${FILENAME}.tar.gz
