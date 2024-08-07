@@ -1909,7 +1909,7 @@ UiLgNoD-lIaMtOh
 
     cat <<UiLgNoD-lIaMtOh | tee ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/crontab >/dev/null
 @reboot cd ${HOME}/s-c-f-serv00-${REPORT_DATE_S} ; bash restart.sh
-$(crontab -l | sed "\|@reboot cd ${HOME}/s-c-f-serv00-${REPORT_DATE_S} ; bash restart.sh|d")
+$(crontab -l | sed '/s-c-f-serv00.sh/d' | sed "\|@reboot cd ${HOME}/s-c-f-serv00-.* ; bash restart.sh|d")
 UiLgNoD-lIaMtOh
     crontab ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/crontab
     rm -fv ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/crontab
