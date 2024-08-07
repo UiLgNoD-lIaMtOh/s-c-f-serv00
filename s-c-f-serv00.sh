@@ -164,7 +164,7 @@ UiLgNoD-lIaMtOh
     # 启动 sing-box-freebsd 服务
     nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/config.json > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box.log 2>&1 & disown
     # 后台启用 cloudflared-freebsd 获得隧穿日志并脱离 shell 终端寿命
-    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token $ARGO_AUTH > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared.log 2>&1 & disown
+    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared.log 2>&1 & disown
 
     # 睡 5 秒，让 cloudflared-freebsd 充分运行
     sleep 5
@@ -1948,9 +1948,8 @@ UiLgNoD-lIaMtOh
     cat ${HOME}/s-c-f-serv00-*/result.txt
     
     # 当然也有可能重启后也可能根本没有启动，那就借用已经存在的文件启动一下试试吧？别忘了 ARGO 隧道 token ，请换成自己的
-    export ARGO_AUTH='eyJhIjoiZDkyYTUyMDAxZDNiNWM4N2ExYzFmYzc2ZGFjZTFlMTYiLCJ0IjoiODU0MDEzNTctZGIyNy00NDExLWEwNmYtYjVkMTU5YThmODlmIiwicyI6IlpUZGlabVpoT1RndFlUYzBNaTAwTXpnMUxXSmtaRFV0TkRKa09HRmtZMkUyTlRNNCJ9' 
-    nohup ${HOME}/s-c-f-serv00-*/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-*/config.json > ${HOME}/s-c-f-serv00-*/sing-box.log 2>&1 & disown
-    nohup ${HOME}/s-c-f-serv00-*/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token $ARGO_AUTH > ${HOME}/s-c-f-serv00-*/cloudflared.log 2>&1 & disown
+    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/config.json > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box.log 2>&1 & disown
+    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared.log 2>&1 & disown
 
     # 什么还是不行，那就手动重启脚本，再重新编译二进制文件启动吧！！！
     bash s-c-f-serv00.sh
