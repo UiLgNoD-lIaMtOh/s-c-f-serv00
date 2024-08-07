@@ -1947,7 +1947,12 @@ UiLgNoD-lIaMtOh
     # 可以执行以下命令查看重启后新生成的配置文件信息
     cat ${HOME}/s-c-f-serv00-*/result.txt
     
-    # 当然也有可能重启后也可能根本没有启动，那就手动执行脚本吧？
+    # 当然也有可能重启后也可能根本没有启动，那就借用已经存在的文件启动一下试试吧？别忘了 ARGO 隧道 token ，请换成自己的
+    export ARGO_AUTH='eyJhIjoiZDkyYTUyMDAxZDNiNWM4N2ExYzFmYzc2ZGFjZTFlMTYiLCJ0IjoiODU0MDEzNTctZGIyNy00NDExLWEwNmYtYjVkMTU5YThmODlmIiwicyI6IlpUZGlabVpoT1RndFlUYzBNaTAwTXpnMUxXSmtaRFV0TkRKa09HRmtZMkUyTlRNNCJ9' 
+    nohup ${HOME}/s-c-f-serv00-*/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-*/config.json > ${HOME}/s-c-f-serv00-*/sing-box.log 2>&1 & disown
+    nohup ${HOME}/s-c-f-serv00-*/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token $ARGO_AUTH > ${HOME}/s-c-f-serv00-*/cloudflared.log 2>&1 & disown
+
+    # 什么还是不行，那就手动重启脚本，再重新编译二进制文件启动吧！！！
     bash s-c-f-serv00.sh
     
     # 什么执行脚本都不行连不上？啊，那替换优选IP试试？
