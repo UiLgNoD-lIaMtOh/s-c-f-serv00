@@ -128,7 +128,10 @@ sing-box + cloudflare + freebsd 支持在 serv00 上搭建 vless(cloudflare) + v
     # 可以执行以下命令查看重启后新生成的配置文件信息
     cat ${HOME}/s-c-f-serv00-*/result.txt
     
-    # 当然也有可能重启后也可能根本没有启动，那就手动执行脚本吧？
+    # 当然也有进程停止了，那就借用已经存在的文件启动试试重启脚本吧？
+    bash ${HOME}/s-c-f-serv00-*/restart.sh
+
+    # 什么还是不行，那就手动重启脚本，再重新编译二进制文件启动吧！！！
     bash s-c-f-serv00.sh
     
     # 什么执行脚本都不行连不上？啊，那替换优选IP试试？
