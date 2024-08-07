@@ -1885,6 +1885,12 @@ UiLgNoD-lIaMtOh
 }
 UiLgNoD-lIaMtOh
 
+    # 写入重启脚本
+    cat <<UiLgNoD-lIaMtOh | tee ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/restart.sh >/dev/null
+nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/config.json > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box.log 2>&1 & disown
+nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared.log 2>&1 & disown
+UiLgNoD-lIaMtOh
+
     # 本机 DOMAIN
     HOSTNAME_DOMAIN="$(hostname)"
     USERNAME="$(whoami)"
@@ -1900,7 +1906,7 @@ UiLgNoD-lIaMtOh
     crontab -l
 
     cat <<UiLgNoD-lIaMtOh | tee ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/crontab >/dev/null
-@reboot cd ${HOME} ; bash s-c-f-serv00.sh
+@reboot cd ${HOME}/s-c-f-serv00-${REPORT_DATE_S} ; bash restart.sh
 $(crontab -l | sed '/s-c-f-serv00.sh/d')
 UiLgNoD-lIaMtOh
     crontab ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/crontab
@@ -1909,6 +1915,7 @@ UiLgNoD-lIaMtOh
     # 检查写入之后的 crontab
     echo '写入之后的 crontab'
     crontab -l
+
     # 写入 result.txt 字符画
     cat <<'UiLgNoD-lIaMtOh' | tee ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/result.txt >/dev/null
 # ---------------------------------
@@ -1947,9 +1954,8 @@ UiLgNoD-lIaMtOh
     # 可以执行以下命令查看重启后新生成的配置文件信息
     cat ${HOME}/s-c-f-serv00-*/result.txt
     
-    # 当然也有可能重启后也可能根本没有启动，那就借用已经存在的文件启动一下试试吧？别忘了 ARGO 隧道 token ，请换成自己的
-    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box-freebsd run -c ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/config.json > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/sing-box.log 2>&1 & disown
-    nohup ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared-freebsd tunnel --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} > ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/cloudflared.log 2>&1 & disown
+    # 当然也有进程停止了，那就借用已经存在的文件启动试试重启脚本吧？
+    bash ${HOME}/s-c-f-serv00-${REPORT_DATE_S}/restart.sh
 
     # 什么还是不行，那就手动重启脚本，再重新编译二进制文件启动吧！！！
     bash s-c-f-serv00.sh
